@@ -6,6 +6,9 @@ namespace App\Parser;
 
 class Parser
 {
+    /**
+     * @var IParse
+     */
     private IParse $parser;
 
     /**
@@ -25,6 +28,9 @@ class Parser
         $this->parser = $parser;
     }
 
+    /**
+     * @return array
+     */
     public function getData(): array
     {
        return $this->parser->run();

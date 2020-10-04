@@ -18,3 +18,4 @@ Route::get('/', function () {
 });
 
 Route::get("/parse", [\App\Http\Controllers\Test\TestController::class, 'index'])->name('parser.index');
+Route::get("/test", [\App\Http\Controllers\Test\TestController::class, 'test'])->name('parser.test');

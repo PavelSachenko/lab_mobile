@@ -8,6 +8,34 @@ use App\Parser\IParse;
 
 class ParserFit implements IParse
 {
+
+    /**
+     * @var array
+     */
+    private array $lists = [];
+
+    /**
+     * ParserFit constructor.
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     */
+    public function __construct()
+    {
+        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+        $excel = $reader->load('S:\newOpen\OpenServer\domains\schedule.loc\app\Parser\Parsers\testpars.xls');
+        // Устанавливаем индекс активного листа
+        $excel->setActiveSheetIndex(0);
+        // Получаем активный лист
+        $sheet = $excel->getActiveSheet();
+        foreach ($excel->getWorksheetIterator() as $worksheet) {
+            $this->lists[] = $worksheet->toArray();
+        }
+    }
+
+    /**
+     * @param array $groups
+     * @param array $list
+     * @param $range
+     */
     private function createSchedule(array &$groups, array &$list, $range)
     {
         foreach ($list as $keyRow => $row) {
@@ -60,6 +88,10 @@ class ParserFit implements IParse
         }
     }
 
+    /**
+     * @param array $lists
+     * @return array
+     */
     private function findRangeForGroup(array $lists) :array
     {
         $range = [
@@ -101,23 +133,19 @@ class ParserFit implements IParse
         return $groups;
     }
 
+    /**
+     * @return array
+     */
     public function run(): array
     {
+        $groups['course'] = 4;
+        $groups['faculty'] = 'FIT';
+        $groups['schedule'] = $this->searchGroup($this->lists[0]);
+        $range = $this->findRangeForGroup($this->lists[0]);
+        $this->createSchedule($groups['schedule'], $this->lists[0], $range);
 
-        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
-        $excel = $reader->load('S:\newOpen\OpenServer\domains\schedule.loc\app\Parser\Parsers\testpars.xls');
-        // Устанавливаем индекс активного листа
-        $excel->setActiveSheetIndex(0);
-        // Получаем активный лист
-        $sheet = $excel->getActiveSheet();
-        $lists = [];
-        foreach ($excel->getWorksheetIterator() as $worksheet) {
-           $lists[] = $worksheet->toArray();
-        }
 
-        $groups = $this->searchGroup($lists[0]);
-        $range = $this->findRangeForGroup($lists[0]);
-        $this->createSchedule($groups, $lists[0], $range);
+//        $groups['schedule'] = $groups;
         return $groups;
     }
 }
