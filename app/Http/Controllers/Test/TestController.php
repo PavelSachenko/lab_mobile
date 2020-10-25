@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Test;
 
+use App\Graber\Grab;
 use App\Http\Controllers\Controller;
 use App\Models\Parser\Faculty;
 use App\Models\Parser\Group;
@@ -22,6 +23,10 @@ class TestController extends Controller
         $data = (new Parser(new ParserFit()))->getData();
         Group::insertGroups($data);
         return Schedule::insertSubjects($data);
-        return 'ok';
+    }
+
+    public function grab()
+    {
+        return (new Grab())->getSrc();
     }
 }
