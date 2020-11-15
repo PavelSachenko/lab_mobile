@@ -24,4 +24,7 @@ Route::get("/grab", [\App\Http\Controllers\Test\TestController::class, 'grab'])-
 
 Route::get("/faculty", [\App\Http\Controllers\Schedule\FacultyController::class, 'index'])->name('faculty.index');
 Route::get("/faculty/{faculty}/{course}", [\App\Http\Controllers\Schedule\GroupController::class, 'index'])->name('group.index');
-Route::get("/schedule/{group_id}", [\App\Http\Controllers\Schedule\GroupController::class, 'index'])->name('group.index');
+Route::get("/schedule/{group_id}", [\App\Http\Controllers\Schedule\ScheduleController::class, 'index'])->name('schedule.index');
+
+
+Route::get("/telegram/", [\App\Http\Controllers\Telegram\IndexController::class, 'index'])->name('telegram.index');
